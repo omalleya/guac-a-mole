@@ -1,12 +1,13 @@
 import React from 'react';
-import Mole from './Nodes/Mole.js';
 
 export default class GameBoard extends React.Component {
 
   //if certain state, set that states image. I.e. mole, guac, hole
   constructor(props){
     super(props);
+
     this.state = {
+      score: 0,
       curMoleIndex: -1,
       nodes: ["hole","hole","hole","hole","hole","hole"]
     };
@@ -16,10 +17,8 @@ export default class GameBoard extends React.Component {
   }
 
   loadMole() {
-    setTimeout(() => {
-      var defaultNodes = ["hole","hole","hole","hole","hole","hole"];
-      this.setState({nodes: defaultNodes});
-    }, 3000)
+    var defaultNodes = ["hole","hole","hole","hole","hole","hole"];
+    this.setState({nodes: defaultNodes});
 
     setTimeout(() => {
       var index = Math.floor(Math.random() * (6 - 0) + 0);
@@ -28,12 +27,18 @@ export default class GameBoard extends React.Component {
       var newNodes = this.state.nodes;
       newNodes[index] = "mole";
       this.setState({nodes: newNodes});
-    }, 3000)
+    }, 2000);
 
   }
 
   moleClick(e) {
     console.log("Mole has been guac'd");
+
+    var newScore = this.state.score;
+    newScore+=1;
+    this.setState({score: newScore});
+
+    console.log(this.state.score);
     var newNodes = this.state.nodes;
     newNodes[this.state.curMoleIndex] = "guacamole";
     this.setState({nodes: newNodes});
@@ -42,6 +47,10 @@ export default class GameBoard extends React.Component {
 
   componentDidMount(){
     this.intervalID = setInterval(() => this.loadMole(), 3000);
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.intervalID);
   }
 
   render() {
@@ -58,7 +67,6 @@ export default class GameBoard extends React.Component {
 
     return (
       <div>
-        <Mole src='/mole.jpg' key="5" onClick={this.moleClick}/>
         {holes}
       </div>
     );
