@@ -56,7 +56,7 @@ export default class GameBoard extends React.Component {
   render() {
 
     var holes = this.state.nodes.map( (node,index) => {
-      let source = "/"+node+".jpg";
+      let source = "/guacamole/"+node+".jpg";
 
       if (node === "mole") {
         return <img src={source} key={index} onClick={this.moleClick} alt="mole" width="100" height="100" />;
